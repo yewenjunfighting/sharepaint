@@ -21,7 +21,7 @@
 				vertical-align: middle;
 				position: relative;
 			}
-	
+
 			.box {
 				height: 42px;
 				/* margin: 200px auto; */
@@ -29,14 +29,14 @@
 				position: relative;
 				border-radius: 7px;
 			}
-	
+
 			.box img {
 				width: 30px;
 				height: 30px;
 				vertical-align: middle;
-	
+
 			}
-	
+
 			box li a {
 				/* display:table-cell; */
 				/* text-align:center; 2 */
@@ -45,12 +45,12 @@
 				width: 40px;
 				margin-left: 5px;
 			}
-	
+
 			li:hover {
 				border-radius: 7px;
 				background-color: #cbe6fc;
 			}
-	
+
 			.div {
 				display: inline-block;
 				position: absolute;
@@ -69,15 +69,19 @@
 				<ul>
 					<li style="width:240px;margin-left: 10px">
 						<img src="./images/room_number.png">
+<<<<<<< HEAD
 							<div class="div"><span style="width:80px;">房间号：<span><span id="room-id">roomnumber<span></div>
+=======
+							<div class="div"><span style="width:80px;">房间号：</span><span id="room-id">number</span></div>
+>>>>>>> 5013df0f8da8f922343fed6358201190c33650aa
 					</li>
 					<li style="width:200px">
 						<img src="./images/room_owner.png">
-							<div class="div"><span style="width:80px;">姓名：<span><span id="user-name">roomowner<span><div>
+							<div class="div"><span style="width:80px;">姓名：</span><span id="user-name">roomowner</span></div>
 					</li>
 					<li style="width:240px">
 						<img src="./images/persons.png">
-							<div class="div"><span style="width:80px;">人数：<span><span id="user-count">personnumber<span></div>
+							<div class="div"><span style="width:80px;">人数：</span><span id="user-count">personnumber</span></div>
 					</li>
 					<li>
 						<img src="./images/seting.png"><a>设置</a>
@@ -128,31 +132,29 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="color"></label>
-                                        <input type="color" id="color" name="color">
+                                        <input type="color" id="color" name="color" />
                                     </div>
                                     <button type="button" id="line_width" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">线宽</button>
                                     <div class="dropdown-menu">
 
-                                    <form class="px-4 py-3">
-                                        <div class="form-group">
-                                            <label for="line_width_ipt"></label>
-                                            <input type="range" id="line_width_ipt" name="line_width">
-                                        </div>
-                                      </form>
+										<form class="px-4 py-3">
+											<div class="form-group">
+												<label for="line_width_ipt"></label>
+												<input type="range" id="line_width_ipt" name="line_width" />
+											</div>
+										</form>
+									</div>
                                 </form>
-                                </div>
                             </div>
 						</div>
 					</div>
 				</div>
-	</div>
+			</div>
 			<!--登录模态框开始-->
 			<div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<!-- <button class="close" data-dismiss="modal">&times;</button>关闭 -->
-							<!-- <h3 class="text-success">登录界面</h3> -->
 						</div>
 						<div class="modal-body">
 							<form id="login-form" class="form-horizontal" action="#" method="post">
@@ -177,7 +179,6 @@
 						<div class="modal-footer">
 							<button class="btn btn-info btn-login" data-dismiss="modal">登录</button>
 						</div>
-							<!-- <button class="btn btn-danger" data-dismiss="modal">关闭</button> -->
 					</div>
 				</div>
 			</div>
@@ -250,7 +251,7 @@
 				//橡皮擦
 				document.querySelector('.eraser').addEventListener('click', function () {
 					painter.eraser();
-				})
+				});
 				document.querySelector('.btn-login').addEventListener('click',function(){
 					let userName=document.querySelector('[name="username"]').value;
 					let roomId=document.querySelector('[name="number"]').value;
