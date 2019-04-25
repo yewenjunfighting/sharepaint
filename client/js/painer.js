@@ -60,14 +60,15 @@ function debounce(fn,delay){
             this.message={};
             this.roomID;
             this.ws={};
-            // this.ws=this.initWebSocket();  
+            // this.ws=this.initWebSocket();
+            this.context.strokeStyle = '#000';  
             this.isBegin=-1;//起始点
             //画笔渐变色
-            let linearGradient = this.context.createLinearGradient(0,0,900,600);
-            linearGradient.addColorStop(0,"#1EEB9F");
-            linearGradient.addColorStop(0.5,"#FFFFFF");
-            linearGradient.addColorStop(1,"#26B9EB");
-            this.context.strokeStyle = linearGradient;
+            // let linearGradient = this.context.createLinearGradient(0,0,900,600);
+            // linearGradient.addColorStop(0,"#1EEB9F");
+            // linearGradient.addColorStop(0.5,"#FFFFFF");
+            // linearGradient.addColorStop(1,"#26B9EB");
+            // this.context.strokeStyle = linearGradient;
             this.initEvent();
             this.drawLine();
         }
@@ -148,7 +149,7 @@ function debounce(fn,delay){
                 div.className = "rect";
                 div.style.marginLeft = startX + "px";
                 div.style.marginTop = startY + "px";
-                document.querySelector('.container').appendChild(div);
+                document.querySelector('.containerBox').appendChild(div);
                 self.message.option=2;
                 self.message.x1=evt.offsetX;
                 self.message.y1=evt.offsetY;
@@ -276,8 +277,11 @@ function debounce(fn,delay){
             console.log(message)
             let op=message.option;
             let lineWidth=this.lineWidth;
+            let originColor=this.context.strokeStyle;
             let width=message.lineWidth?message.lineWidth:this.lineWidth;
+            let color=message.lineColor?message.lineColor:this.context.strokeStyle;
             this.setLineWidth(width);
+            this.setLineColor(color);
             switch(op){
                 //橡皮檫
                 case 0:
@@ -306,6 +310,7 @@ function debounce(fn,delay){
                     break;
             }
             this.setLineWidth(lineWidth);
+            this.setLineColor(originColor);
         }
         //初始化画布
         initCanvas(data){
