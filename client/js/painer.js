@@ -301,6 +301,7 @@ function debounce(fn,delay){
                     break;
                 
                 case 2:
+                    this.context.beginPath();
                     this.context.rect(message.x1,message.y1,message.x2-message.x1,message.y2-message.y1);
                     this.context.stroke();
                     break;
