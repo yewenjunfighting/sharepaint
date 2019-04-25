@@ -52,22 +52,6 @@ socketIO.on('connection', function (socket) {
         });
     });
 
-    // socket.on('leave', function () {
-    //     socket.emit('disconnect');
-    // });
-
-    // socket.on('disconnect', function () {
-    //     // 从房间名单中移除
-    //     var index = roomInfo[roomID].indexOf(user);
-    //     if (index !== -1) {
-    //         roomInfo[roomID].splice(index, 1);
-    //     }
-    //
-    //     socket.leave(roomID);    // 退出房间
-    //     socketIO.to(roomID).emit('sys', user + '退出了房间', roomInfo[roomID]);
-    //     console.log(user + '退出了' + roomID);
-    // });
-
     // 接收用户消息,发送相应的房间
     socket.on('message', function (paint) {
         var roomID=paint.roomID;
@@ -76,12 +60,6 @@ socketIO.on('connection', function (socket) {
     });
 });
 
-// router.get('/room', function (req, res) {
-//     var roomID = req.query.roomid;
-//     res.render('room', {
-//         roomID: roomID
-//     });
-// });
 
 app.use('/', router);
 
