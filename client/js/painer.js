@@ -184,7 +184,7 @@ function debounce(fn,delay){
                     self.message.lineColor=self.context.strokeStyle;
                     self.message.roomID=self.roomID;
                     self.ws.send(self.message);
-                    console.log(self.message);
+                    console.log(self.message)
                     self.context.beginPath();
                     self.context.rect(x1,y1,self.message.x2-x1,self.message.y2-y1);
                     self.context.stroke();
@@ -362,7 +362,7 @@ function debounce(fn,delay){
             }
             this.optionStack=[];
             this.context.clearRect(0,0,900,600);
-            this.ws.send(message);
+            this.ws.emit('clear',message);
         }
         exit(){
             this.context.clearRect(0,0,900,600);
