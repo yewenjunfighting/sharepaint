@@ -115,24 +115,24 @@
                                 <form>
                                     <div class="form-group">
                                         <label for="color"></label>
-                                        <input type="color" id="color" name="color">
+                                        <input type="color" id="color" name="color" />
                                     </div>
                                     <button type="button" id="line_width" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">线宽</button>
                                     <div class="dropdown-menu">
 
-                                    <form class="px-4 py-3">
-                                        <div class="form-group">
-                                            <label for="line_width_ipt"></label>
-                                            <input type="range" id="line_width_ipt" name="line_width">
-                                        </div>
-                                      </form>
+										<form class="px-4 py-3">
+											<div class="form-group">
+												<label for="line_width_ipt"></label>
+												<input type="range" id="line_width_ipt" name="line_width" />
+											</div>
+										</form>
+									</div>
                                 </form>
-                                </div>
                             </div>
 						</div>
 					</div>
 				</div>
-	</div>
+			</div>
 			<!--登录模态框开始-->
 			<div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
 
@@ -140,8 +140,6 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<!-- <button class="close" data-dismiss="modal">&times;</button>关闭 -->
-							<!-- <h3 class="text-success">登录界面</h3> -->
 						</div>
 						<div class="modal-body">
 							<form id="login-form" class="form-horizontal" action="#" method="post">
@@ -166,7 +164,6 @@
 						<div class="modal-footer">
 							<button class="btn btn-info btn-login" data-dismiss="modal">登录</button>
 						</div>
-							<!-- <button class="btn btn-danger" data-dismiss="modal">关闭</button> -->
 					</div>
 				</div>
 			</div>
@@ -211,7 +208,7 @@
 				//橡皮擦
 				document.querySelector('.eraser').addEventListener('click', function () {
 					painter.eraser();
-				})
+				});
 				document.querySelector('.btn-login').addEventListener('click',function(){
 					let userName=document.querySelector('[name="username"]').value;
 					let roomId=document.querySelector('[name="number"]').value;
