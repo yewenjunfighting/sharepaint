@@ -63,11 +63,13 @@ socketIO.on('connection', function (socket) {
     //清空画板
     socket.on('clear', function (paint) {
         var roomID=paint.roomID;
+        console.log(paint)
         for(var i=0;i<all.length;i++){
             if(all[i].roomID==roomID){
                 all.splice(i,1);
             }
         }
+        console.log(all)
         socketIO.to(roomID).emit('message',paint,null);
     });
     socket.on('disconnect', function () {

@@ -307,6 +307,7 @@ function debounce(fn,delay){
                     break;
                 //清屏
                 case 3:
+                    this.optionStack=[];
                     this.context.clearRect(0,0,900,600);
                     break;
             }
