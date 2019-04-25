@@ -11,17 +11,45 @@ app.set('view engine', 'ejs');
 
 // 创建socket服务
 var socketIO = IO(server);
-// 房间用户名单
-var roomInfo = {};
+// 所有房间绘制信息
+var all=[];
+var roomInfo=[];
 
 socketIO.on('connection', function (socket) {
     console.log('有人连接');
-    socket.on('join', function (roomID) {
+    socket.on('join', function (username,roomID) {
+        for(var i=0,len=roomInfo.length+1;i<len;i++){
+            if(i==len-1){
+                var obj={id:roomID,people:[username]};
+                roomInfo.push(obj);
+                break;
+            }
+            if(roomInfo[i].id==roomID){
+                roomInfo[i].people.push(username);
+                break;
+            }
+        }
+        var number=0;
         // 加入房间
-        socket.join(roomID);
-        // 通知房间内人员
-        socket.broadcast.to(roomID).emit('sys','XX加入了房间'+roomID);
-        console.log('有人加入了' + roomID);
+        socket.join(roomID,function () {
+            var allpaint=[];
+            for(var j=0;j<all.length;j++){
+                if(all[j].roomID==roomID){
+                    allpaint.push(all[j]);
+                }
+            }
+            for(var m=0;m<roomInfo.length;m++){
+                if(roomInfo[m].id==roomID){
+                    number=roomInfo[m].people.length;
+                    break;
+                }
+            }
+            socket.emit('message',allpaint,number);
+            // 通知房间内人员
+            socket.to(roomID).emit('sys','XX加入了房间'+roomID,number);
+            console.log('有人加入了' + roomID);
+            console.log(roomInfo);
+        });
     });
 
     // socket.on('leave', function () {
@@ -41,22 +69,19 @@ socketIO.on('connection', function (socket) {
     // });
 
     // 接收用户消息,发送相应的房间
-    socket.on('message', function (paint,roomID) {
-        // 验证如果用户不在房间内则不给发送
-        // if (roomInfo[roomID].indexOf(user) === -1) {
-        //     return false;
-        // }
-        // console.log(paint,roomID);
-        socket.broadcast.to(roomID).emit('message',paint);
+    socket.on('message', function (paint) {
+        var roomID=paint.roomID;
+        all.push(paint);
+        socket.broadcast.to(roomID).emit('message',paint,null);
     });
 });
 
-router.get('/room', function (req, res) {
-    var roomID = req.query.roomid;
-    res.render('room', {
-        roomID: roomID
-    });
-});
+// router.get('/room', function (req, res) {
+//     var roomID = req.query.roomid;
+//     res.render('room', {
+//         roomID: roomID
+//     });
+// });
 
 app.use('/', router);
 
