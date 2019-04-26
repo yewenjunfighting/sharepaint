@@ -49,8 +49,8 @@ socketIO.on('connection', function (socket) {
             socket.emit('message',allpaint,number);
             // 通知房间内人员
             socket.to(roomID).emit('sys','XX加入了房间'+roomID,number);
-            console.log('有人加入了' + roomID);
-            console.log(roomInfo);
+            // console.log('有人加入了' + roomID);
+            // console.log(roomInfo);
         });
     });
 
@@ -78,14 +78,20 @@ socketIO.on('connection', function (socket) {
                 var index = roomInfo[i].people.indexOf(socket.username);
                 roomInfo[i].people.splice(index, 1);
                 number=roomInfo[i].people.length;
+                if(number==0){
+                    for(var j=all.length-1;j>=0;j--){
+                        if(all[j].roomID==socket.roomID){
+                            all.splice(j,1);
+                        }
+                    }
+                }
                 break;
             }
         }
-        socket.leave(socket.roomID);    // 退出房间
         socket.to(socket.roomID).emit('sys','XX离开了房间'+socket.roomID,number);
-        // socketIO.to(roomID).emit('sys', user + '退出了房间', roomInfo[roomID]);
-        // console.log(user + '退出了' + roomID);
-        console.log(socket.roomID);
+        socket.leave(socket.roomID);    // 退出房间
+        console.log(all);
+        // console.log(socket.roomID);
       });
 });
 
