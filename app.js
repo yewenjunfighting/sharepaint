@@ -68,6 +68,7 @@ socketIO.on('connection', function (socket) {
                 all.splice(i,1);
             }
         }
+        console.log(all)
         socketIO.to(roomID).emit('message',paint,null);
     });
     socket.on('disconnect', function () {

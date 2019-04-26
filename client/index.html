@@ -14,7 +14,6 @@
 				float: left;
 				width: 89px;
 				height: 42px;
-				/* text-align: center; */
 				cursor: pointer;
 				font: 400 16px/42px microsoft yahei;
 				line-height: 42px;
@@ -24,7 +23,6 @@
 
 			.box {
 				height: 42px;
-				/* margin: 200px auto; */
 				background: #fff;
 				position: relative;
 				border-radius: 7px;
@@ -38,8 +36,6 @@
 			}
 
 			box li a {
-				/* display:table-cell; */
-				/* text-align:center; 2 */
 				margin-top: 0%;
 				position: absolute;
 				width: 40px;
@@ -150,8 +146,7 @@
 			<div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-						</div>
+						<div class="modal-header"></div>
 						<div class="modal-body">
 							<form id="login-form" class="form-horizontal" action="#" method="post">
 								<div class="form-group">
@@ -173,36 +168,39 @@
 							</form>
 						</div>
 						<div class="modal-footer">
-							<button class="btn btn-info btn-login" data-dismiss="modal">登录</button>
+							<!--<button class="userLogin" data-dismiss="model">登录</button>-->
+							<button class="btn btn-info btn-login">登录</button>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 			<!-- 模态框 -->
 			<div class="modal fade" id="makesure">
 					<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-				
-						<!-- 模态框头部 -->
-						<div class="modal-header">
-						<h4 class="modal-title">清空画布</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<div class="modal-content">
+
+							<!-- 模态框头部 -->
+							<div class="modal-header">
+								<h4 class="modal-title">清空画布</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<!-- 模态框主体 -->
+							<div class="modal-body">
+								确认清空画布吗？
+							</div>
+
+							<!-- 模态框底部 -->
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger clear" data-dismiss="modal">确认</button>
+							</div>
+
 						</div>
-				
-						<!-- 模态框主体 -->
-						<div class="modal-body">
-						确认清空画布吗？
-						</div>
-				
-						<!-- 模态框底部 -->
-						<div class="modal-footer">
-						<button type="button" class="btn btn-danger clear" data-dismiss="modal">确认</button>
-						</div>
-				
-					</div>
 					</div>
 			</div>
 	</div>
+</body>
 	<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
 	<script src="js/DPAlgorithm.js"></script>
 	<script src="js/painer.js"></script>
@@ -238,27 +236,32 @@
 				};
 				document.querySelector('.rectangle').onclick=function(){
 					painter.drawRect();
-				}
+				};
 				// //清屏
 				document.querySelector('.clear').onclick = function () {
 
 					painter.clearCls();
-				}
+				};
 				//橡皮擦
 				document.querySelector('.eraser').addEventListener('click', function () {
 					painter.eraser();
 				});
-				document.querySelector('.btn-login').addEventListener('click',function(){
-					let userName=document.querySelector('[name="username"]').value;
-					let roomId=document.querySelector('[name="number"]').value;
-					document.getElementById('user-name').innerHTML=userName;
-					document.getElementById('room-id').innerHTML=roomId;
-					painter.initWebPainter(userName,roomId);
-				})
+				document.querySelector('.btn-login').addEventListener('click',function(event){
+				    let userLogin = document.querySelector('.userLogin');
+				    console.log(userLogin);
+					let userName = document.querySelector('[name="username"]').value;
+					let roomId = document.querySelector('[name="number"]').value;
+					userName === '' ? alert('请输入用户名') : document.getElementById('user-name').innerHTML=userName ;
+					if(userName) roomId === '' ? alert('请输入房间号') : document.getElementById('room-id').innerHTML=roomId ;
+					if(userName && roomId) {
+                        $('#login-modal').modal('hide');
+                        painter.initWebPainter(userName,roomId);
+					}
+				});
 				document.querySelector('#exit').addEventListener('click',function(){
 					painter.exit();
 					window.location.reload();
-				})
+				});
 				//下载画布内容
 				document.querySelector("#save").onclick = function () {
 					painter.save('picture');
@@ -287,28 +290,7 @@
 				activeTool = element;
 			});
 		});
-        window.onload = function () {
-            // // 获取相关元素
-            // var btn = document.querySelectorAll(".box span")[0];
-            // var ul = document.querySelectorAll(".box ul")[0];
-            // var liarr = ul.children;
-            // var liwidth = liarr[0].offsetWidth;
-            // //获取相关元素，绑定事件，书写事件驱动程序
-            // var raw = 0;
-            // for (var i = 0; i < liarr.length; i++) {
-            //     // 给元素绑定index属性；
-            //     liarr[i].index = i;
-            //     liarr[i].onmouseover = function () {
-            //         animate(btn, this.index * liwidth);
-            //     }
-            //     liarr[i].onmouseout = function () {
-            //         animate(btn, raw * liwidth);
-            //     }
-            //     liarr[i].onclick = function () {
-            //         raw = this.index;
-            //     }
-            // }
-        }
+        window.onload = function () {}
 	</script>
 
 </html>
