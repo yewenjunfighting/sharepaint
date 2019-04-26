@@ -190,6 +190,7 @@ function debounce(fn,delay){
                     self.context.stroke();
                     //恢复空对象
                     self.message={};
+                    self.context.canvas.removeEventListener("mousemove",self.mouseMove);
                 }
             }
         }
@@ -245,7 +246,7 @@ function debounce(fn,delay){
             switch(mode){
                 case 1://矩形框模式
                     this.context.canvas.removeEventListener("mousedown",this.startAction);
-                    this.context.canvas.removeEventListener("mousemove",this.moveAction);
+                    //this.context.canvas.removeEventListener("mousemove",this.moveAction);
                     this.context.canvas.removeEventListener("mouseup",this.endAction);
                     this.context.canvas.addEventListener("mousedown",this.mouseStart);
                     document.body.addEventListener("mouseup",this.mouseUp);
@@ -254,12 +255,15 @@ function debounce(fn,delay){
                     this.context.canvas.addEventListener("mousedown",this.startAction);
                     this.context.canvas.addEventListener("mouseup",this.endAction);
                     this.context.canvas.removeEventListener("mousedown",this.mouseStart);
-                    this.context.canvas.removeEventListener("mousemove",this.mouseMove);
+                    
                     document.body.removeEventListener("mouseup",this.mouseUp);
                     break;
                 case 3://橡皮檫模式
+                    this.context.canvas.addEventListener("mousedown",this.startAction);
+                    this.context.canvas.addEventListener("mouseup",this.endAction);
+                    
                     this.context.canvas.removeEventListener("mousedown",this.mouseStart);
-                    this.context.canvas.removeEventListener("mousemove",this.mouseMove);
+                    // this.context.canvas.removeEventListener("mousemove",this.moveAction);
                     document.body.removeEventListener("mouseup",this.mouseUp);
             }
         }

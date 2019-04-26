@@ -63,8 +63,7 @@ socketIO.on('connection', function (socket) {
     //清空画板
     socket.on('clear', function (paint) {
         var roomID=paint.roomID;
-        console.log(paint)
-        for(var i=0;i<all.length;i++){
+        for(var i=all.length-1;i>=0;i--){
             if(all[i].roomID==roomID){
                 all.splice(i,1);
             }
