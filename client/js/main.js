@@ -1,4 +1,5 @@
 /**
+ * Created by Administrator on 2017/8/10.
  * js/main.js
  */
 (function () {
@@ -29,7 +30,7 @@
             panter.eraser();
         }
         //下载画布内容
-        document.querySelector(".download").onclick=function(){
+        document.querySelector(".download").onclick=function(){   
             var a=panter.save();
             console.log(1);
             this.href=a;
