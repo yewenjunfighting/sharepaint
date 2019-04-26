@@ -65,7 +65,7 @@
 				<ul>
 					<li style="width:240px;margin-left: 10px">
 						<img src="./images/room_number.png">
-							<div class="div"><span style="width:80px;">房间号：</span><span id="room-id">number</span></div>
+							<div class="div"><span style="width:80px;">房间号：<span><span id="room-id">roomnumber<span></div>
 					</li>
 					<li style="width:200px">
 						<img src="./images/room_owner.png">
@@ -81,17 +81,30 @@
 					<li>
 						<img src="./images/model.png"><a>模板</a>
 					</li>
-					<li>
-						<img src="./images/save.png"><a>保存</a>
+					<li id="save">
+						<img src="./images/save.png"><a >保存</a>
 					</li>
-					<li>
+					<li id="exit">
 						<img src="./images/out.png"><a>退出</a>
 					</li>
 				</ul>
-				<div class="col">
+				<div class="col containerBox">
 					<canvas id="box" width="900" height="600"></canvas>
 				</div>
 			</div>
+		<!-- <div class="toolMenu">
+			            <div class="openButton">刷</div>
+			            <ul class="tool">
+			                <li>宽度:<input class="widthInput" type="range"/></li>
+			                <li>颜色:<input type="color"/></li>
+			                <li><button>橡皮擦</button></li>
+			            </ul>
+			            <ul class="tool eraser">
+			                <li>宽度:<input class="eraserInput" type="range"/></li>
+			            </ul>
+			            <!-- <div class="openButton clearButton">清</div>
+			            <a href="" class="download"><div class="download">存</div></a>
+					</div>  -->
 			<div class="col-1">
 				<div class="card tools">
 					<div class="row no-gutters">
@@ -103,10 +116,10 @@
 							<div class="tool text-center eraser" data-name="eraser"> <i class="fas fa-eraser"></i></div>
 						</div>
 						<div class="col-12">
-							<div class="tool text-center" data-name="line"> <i class="fas fa-slash"></i></div>
+							<div class="tool text-center" data-name="clear" data-toggle="modal" data-target="#makesure"> <i class="fas fa-slash"></i></div>
 						</div>
 						<div class="col-12">
-                            <div class="tool text-center" data-name="rect"> <i class="far fa-square"></i></div>
+                            <div class="tool text-center rectangle" data-name="rect"> <i class="far fa-square"></i></div>
                             <div class="col-12">
                                 <form>
                                     <div class="form-group">
@@ -131,12 +144,9 @@
 			</div>
 			<!--登录模态框开始-->
 			<div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
-
-
 				<div class="modal-dialog">
 					<div class="modal-content">
-						<div class="modal-header">
-						</div>
+						<div class="modal-header"></div>
 						<div class="modal-body">
 							<form id="login-form" class="form-horizontal" action="#" method="post">
 								<div class="form-group">
@@ -165,7 +175,32 @@
 				</div>
 			</div>
 		</div>
+			<!-- 模态框 -->
+			<div class="modal fade" id="makesure">
+					<div class="modal-dialog modal-sm">
+						<div class="modal-content">
+
+							<!-- 模态框头部 -->
+							<div class="modal-header">
+								<h4 class="modal-title">清空画布</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+
+							<!-- 模态框主体 -->
+							<div class="modal-body">
+								确认清空画布吗？
+							</div>
+
+							<!-- 模态框底部 -->
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger clear" data-dismiss="modal">确认</button>
+							</div>
+
+						</div>
+					</div>
+			</div>
 	</div>
+</body>
 	<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
 	<script src="js/DPAlgorithm.js"></script>
 	<script src="js/painer.js"></script>
@@ -199,10 +234,14 @@
 				document.querySelector("input[type=color]").onchange = function () {
 					painter.setLineColor(this.value);
 				};
+				document.querySelector('.rectangle').onclick=function(){
+					painter.drawRect();
+				};
 				// //清屏
-				// document.querySelector('clearButton').onclick = function () {
-				// 	painter.clearCls();
-				// }
+				document.querySelector('.clear').onclick = function () {
+
+					painter.clearCls();
+				};
 				//橡皮擦
 				document.querySelector('.eraser').addEventListener('click', function () {
 					painter.eraser();
@@ -218,12 +257,17 @@
                         $('#login-modal').modal('hide');
                         painter.initWebPainter(userName,roomId);
 					}
-				})
+				});
+				document.querySelector('#exit').addEventListener('click',function(){
+					painter.exit();
+					window.location.reload();
+				});
 				//下载画布内容
-				// document.querySelector(".download").onclick = function () {
-				// 	var a = painter.save();
-				// 	this.href = a;
-				// }
+				document.querySelector("#save").onclick = function () {
+					painter.save('picture');
+					// var a = painter.save();
+					// this.href = a;
+				}
 			}
 			init();
 		})();

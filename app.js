@@ -18,6 +18,8 @@ var roomInfo=[];
 socketIO.on('connection', function (socket) {
     console.log('有人连接');
     socket.on('join', function (username,roomID) {
+        socket.roomID=roomID;
+        socket.uesername=username;
         for(var i=0,len=roomInfo.length+1;i<len;i++){
             if(i==len-1){
                 var obj={id:roomID,people:[username]};
@@ -58,6 +60,34 @@ socketIO.on('connection', function (socket) {
         all.push(paint);
         socket.broadcast.to(roomID).emit('message',paint,null);
     });
+    //清空画板
+    socket.on('clear', function (paint) {
+        var roomID=paint.roomID;
+        for(var i=all.length-1;i>=0;i--){
+            if(all[i].roomID==roomID){
+                all.splice(i,1);
+            }
+        }
+        console.log(all)
+        socketIO.to(roomID).emit('message',paint,null);
+    });
+    socket.on('disconnect', function () {
+        // 从房间名单中移除
+        var number=0;
+        for(var i=0;i<roomInfo.length;i++){
+            if(roomInfo[i].id==socket.roomID){
+                var index = roomInfo[i].people.indexOf(socket.username);
+                roomInfo[i].people.splice(index, 1);
+                number=roomInfo[i].people.length;
+                break;
+            }
+        }
+        socket.leave(socket.roomID);    // 退出房间
+        socket.to(socket.roomID).emit('sys','XX离开了房间'+socket.roomID,number);
+        // socketIO.to(roomID).emit('sys', user + '退出了房间', roomInfo[roomID]);
+        // console.log(user + '退出了' + roomID);
+        console.log(socket.roomID);
+      });
 });
 
 

@@ -5,7 +5,8 @@ let canvasEle = document.getElementById('box');
             canvasEle.width = 900;
             canvasEle.height = 600;
 const eraserWidth=16;
-const _EleLeft=getElementLeft(canvasEle),_EleTop=getElementTop(canvasEle);
+let _EleLeft=getElementLeft(canvasEle),_EleTop=getElementTop(canvasEle);
+console.log(_EleLeft,_EleTop)
 function getElementLeft(element){
     let actualLeft=element.offsetLeft;
     let current=element.offsetParent;
@@ -35,6 +36,18 @@ function throttle(fn,delay,context){
 		}
 	}
 }
+function debounce(fn,delay){
+	let timer=null;
+	return function(){
+		let context=this;
+		let args=arguments;
+		clearTimeout(timer);
+		timer=setTimeout(()=>{
+			fn.apply(context,args)
+		},delay)
+	}
+}
+
 (function () {
     class Painter{
         constructor(id) {
@@ -46,16 +59,18 @@ function throttle(fn,delay,context){
             this.roomID;
             this.ws={};
             // this.ws=this.initWebSocket();
+            this.context.strokeStyle = '#000';
             this.isBegin=-1;//起始点
             //画笔渐变色
-            let linearGradient = this.context.createLinearGradient(0,0,900,600);
-            linearGradient.addColorStop(0,"#1EEB9F");
-            linearGradient.addColorStop(0.5,"#FFFFFF");
-            linearGradient.addColorStop(1,"#26B9EB");
-            this.context.strokeStyle = linearGradient;
+            // let linearGradient = this.context.createLinearGradient(0,0,900,600);
+            // linearGradient.addColorStop(0,"#1EEB9F");
+            // linearGradient.addColorStop(0.5,"#FFFFFF");
+            // linearGradient.addColorStop(1,"#26B9EB");
+            // this.context.strokeStyle = linearGradient;
             this.initEvent();
             this.drawLine();
         }
+
         //事件注册中心
         initEvent(){
             this.startAction=startAction;
@@ -65,7 +80,7 @@ function throttle(fn,delay,context){
             this.mouseMove=mouseMove;
             this.mouseUp=mouseUp;
             let self=this;
-            let sendMessageT=throttle(this.sendMessage,100,this);
+            let sendMessageT=throttle(this.sendMessage,50,this);
              //封装鼠标按下函数
             function startAction(event) {
                 //如果没有使用橡皮擦就画线
@@ -80,21 +95,22 @@ function throttle(fn,delay,context){
             }
             //封装鼠标抬起函数
             function endAction() {
-                // console.log(this.resultposition)
-                // console.log(DouglasPeucker.getProcessPoints(this.resultposition, 1))
                 self.isBegin=0;
+                let positions;
+                if(self.option){
+                    positions=DouglasPeucker.getProcessPoints(self.resultposition, 1);
+                }else{
+                    positions=self.resultposition;
+                }
                 let message={
                     option:self.option,
-                    positions:Object.assign([],DouglasPeucker.getProcessPoints(self.resultposition, 1)),
+                    positions:Object.assign([],positions),
                     lineWidth:self.lineWidth,
                     lineColor:self.context.strokeStyle,
                     isBegin:self.isBegin,
                     isEnd:1,
                     roomID:self.roomID
                 }
-                // //不再使用橡皮擦
-                // self.isClear=false;
-                // self.option=1;
                 //移除鼠标移动事件
                 self.context.canvas.removeEventListener("mousemove",self.moveAction);
                 self.optionStack.push(message);
@@ -106,10 +122,10 @@ function throttle(fn,delay,context){
             //封装鼠标移动函数
             function moveAction(event) {
                 let item;
-
+                let width=self.lineWidth;
                 //判断是否启动橡皮擦功能
                 if(self.isClear){
-                    self.context.clearRect(event.pageX-eraserWidth/2-_EleLeft,event.pageY-eraserWidth/2-_EleTop,eraserWidth,eraserWidth);
+                    self.context.clearRect(event.pageX-width/2-_EleLeft,event.pageY-width/2-_EleTop,width,width);
                     item={x:event.pageX - _EleLeft,y:event.pageY - _EleTop};
                     self.resultposition.push(item);
                     return;
@@ -125,47 +141,53 @@ function throttle(fn,delay,context){
                 let startX=0,startY=0,id='rect';
                 let evt = window.event || e;
                 let div = document.createElement("div");
-                startX = evt.pageX - _EleLeft;
-                startY = evt.pageY - _EleTop;
+                startX = evt.offsetX;
+                startY = evt.offsetY;
                 div.id = id;
-                div.className = "div";
+                div.className = "rect";
                 div.style.marginLeft = startX + "px";
                 div.style.marginTop = startY + "px";
-                document.body.appendChild(div);
+                document.querySelector('.containerBox').appendChild(div);
                 self.message.option=2;
-                self.message.x1=evt.pageX - _EleLeft;
-                self.message.y1=evt.pageY - _EleTop;
+                self.message.x1=evt.offsetX;
+                self.message.y1=evt.offsetY;
                 self.context.canvas.addEventListener("mousemove",self.mouseMove);
             }
             function mouseMove(e){
                 let evt = window.event || e;
                 let rectLeft,rectTop,rectHeight,rectWidth;
                 let startX=self.message.x1,startY=self.message.y1;
-                // var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-                // var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
-                rectLeft = (startX - (evt.pageX - _EleLeft) > 0 ? evt.pageX - _EleLeft: startX) + "px";
-                rectTop = (startY - (evt.pageY - _EleTop)> 0 ? evt.pageY - _EleTop: startY) + "px";
-                rectHeight = Math.abs(startY - (evt.pageY- _EleTop)) + "px";
-                rectWidth = Math.abs(startX - (evt.pageX - _EleLeft)) + "px";
-                document.querySelector('#rect').style.marginLeft = rectLeft;
-                document.querySelector('#rect').style.marginTop = rectTop;
-                document.querySelector('#rect').style.width = rectWidth;
-                document.querySelector('#rect').style.height = rectHeight;
-
-
+                rectLeft = (startX - (evt.offsetX ) > 0 ? evt.offsetX : startX) + "px";
+                rectTop = (startY - (evt.offsetY )> 0 ? evt.offsetY : startY) + "px";
+                rectHeight = Math.abs(startY - (evt.offsetY)) + "px";
+                rectWidth = Math.abs(startX - (evt.offsetX)) + "px";
+                if(document.querySelector('#rect')){
+                    document.querySelector('#rect').style.marginLeft = rectLeft;
+                    document.querySelector('#rect').style.marginTop = rectTop;
+                    document.querySelector('#rect').style.width = rectWidth;
+                    document.querySelector('#rect').style.height = rectHeight;
+                }
             }
             function mouseUp(e){
-                console.log('mouseUp')
-                document.querySelector('#rect').remove()
-                let evt = window.event || e;
-                self.message.x2=evt.pageX - _EleLeft;
-                self.message.y2=evt.pageY - _EleTop;
-                self.message.lineWidth=self.lineWidth;
-                self.message.lineColor=self.context.strokeStyle;
-                self.ws.send(self.message);
-                //恢复空对象
-                self.message={};
-                self.changeMode(2);
+                console.log(e)
+                if(document.querySelector('#rect')){
+                    document.querySelector('#rect').remove();
+                    let evt = window.event || e;
+                    let x1=self.message.x1 ,y1=self.message.y1 ;
+                    self.message.x2=evt.offsetX;
+                    self.message.y2=evt.offsetY;
+                    self.message.lineWidth=self.lineWidth;
+                    self.message.lineColor=self.context.strokeStyle;
+                    self.message.roomID=self.roomID;
+                    self.ws.send(self.message);
+                    console.log(self.message)
+                    self.context.beginPath();
+                    self.context.rect(x1,y1,self.message.x2-x1,self.message.y2-y1);
+                    self.context.stroke();
+                    //恢复空对象
+                    self.message={};
+                    self.context.canvas.removeEventListener("mousemove",self.mouseMove);
+                }
             }
         }
         initWebPainter(username,roomID){
@@ -177,6 +199,7 @@ function throttle(fn,delay,context){
             });
             // 监听消息
             ws.on('message', function (data,flag) {
+                console.log(data)
                 if(flag===null);
                 else document.getElementById('user-count').innerHTML=flag;
                 if(Array.isArray(data)){
@@ -212,15 +235,14 @@ function throttle(fn,delay,context){
                 isEnd:0,
                 roomID:this.roomID
             }
-            // console.log(message)
             this.resultposition=[];
             this.ws.send(message);
         }
         changeMode(mode){
             switch(mode){
-                case 1:
+                case 1://矩形框模式
                     this.context.canvas.removeEventListener("mousedown",this.startAction);
-                    this.context.canvas.removeEventListener("mousemove",this.moveAction);
+                    //this.context.canvas.removeEventListener("mousemove",this.moveAction);
                     this.context.canvas.removeEventListener("mouseup",this.endAction);
                     this.context.canvas.addEventListener("mousedown",this.mouseStart);
                     document.body.addEventListener("mouseup",this.mouseUp);
@@ -229,12 +251,20 @@ function throttle(fn,delay,context){
                     this.context.canvas.addEventListener("mousedown",this.startAction);
                     this.context.canvas.addEventListener("mouseup",this.endAction);
                     this.context.canvas.removeEventListener("mousedown",this.mouseStart);
-                    this.context.canvas.removeEventListener("mousemove",this.mouseMove);
+
                     document.body.removeEventListener("mouseup",this.mouseUp);
                     break;
+                case 3://橡皮檫模式
+                    this.context.canvas.addEventListener("mousedown",this.startAction);
+                    this.context.canvas.addEventListener("mouseup",this.endAction);
+
+                    this.context.canvas.removeEventListener("mousedown",this.mouseStart);
+                    // this.context.canvas.removeEventListener("mousemove",this.moveAction);
+                    document.body.removeEventListener("mouseup",this.mouseUp);
             }
         }
         drawLine() {
+            this.changeMode(2);
             this.option=1;
             this.isClear=false;
             //监听鼠标按下抬起
@@ -244,12 +274,19 @@ function throttle(fn,delay,context){
 
         //更新画布内容
         update(message){
+            console.log(message)
             let op=message.option;
+            let lineWidth=this.lineWidth;
+            let originColor=this.context.strokeStyle;
+            let width=message.lineWidth?message.lineWidth:this.lineWidth;
+            let color=message.lineColor?message.lineColor:this.context.strokeStyle;
+            this.setLineWidth(width);
+            this.setLineColor(color);
             switch(op){
                 //橡皮檫
                 case 0:
                     message.positions.forEach(position=>{
-                        this.context.clearRect(position.x-eraserWidth/2,position.y-eraserWidth/2,eraserWidth,eraserWidth);
+                        this.context.clearRect(position.x-width/2,position.y-width/2,width,width);
                     })
                     break;
                 case 1:
@@ -262,11 +299,20 @@ function throttle(fn,delay,context){
                         this.context.stroke();
                     })
                     break;
+
+                case 2:
+                    this.context.beginPath();
+                    this.context.rect(message.x1,message.y1,message.x2-message.x1,message.y2-message.y1);
+                    this.context.stroke();
+                    break;
                 //清屏
                 case 3:
+                    this.optionStack=[];
                     this.context.clearRect(0,0,900,600);
                     break;
             }
+            this.setLineWidth(lineWidth);
+            this.setLineColor(originColor);
         }
         //初始化画布
         initCanvas(data){
@@ -277,8 +323,19 @@ function throttle(fn,delay,context){
         }
         //封装画笔宽度
         setLineWidth(width) {
+            this.lineWidth = width;
             this.context.lineWidth = width;
         }
+        //封装画布内容转换
+        save(filename) {
+            const MIME_TYPE = "image/png",
+            tempLink = document.createElement('a');
+            tempLink.href = canvasEle.toDataURL(MIME_TYPE);
+            tempLink.download = filename || 'result';
+            document.body.append(tempLink);
+            tempLink.click();
+            tempLink.remove();
+        };
         //封装设置画笔样式
         isRoundLineCap(isRound) {
             this.context.lineCap = isRound?"round":"butt";
@@ -287,12 +344,9 @@ function throttle(fn,delay,context){
         setLineColor(color) {
             this.context.strokeStyle = color;
         }
-        //封装画布内容转换
-        save(){
-            return this.context.canvas.toDataURL();
-        }
         //封装橡皮擦
         eraser(){
+            this.changeMode(3);
             this.option=0;
             this.isClear=true;
         }
@@ -303,15 +357,22 @@ function throttle(fn,delay,context){
                 positions:[],
                 lineWidth:0,
                 lineColor:'',
-                isBegin:1,
-                isEnd:1,
+                isBegin:-1,
+                isEnd:0,
                 roomID:this.roomID
             }
             this.optionStack=[];
             this.context.clearRect(0,0,900,600);
-            this.ws.send(message);
+            this.ws.emit('clear',message);
+        }
+        exit(){
+            this.context.clearRect(0,0,900,600);
         }
     }
     //Painter定义到window上
     window.Painter = Painter;
 })();
+window.onresize=debounce(function(){
+    _EleLeft=getElementLeft(canvasEle);
+    _EleTop=getElementTop(canvasEle);
+},500);
