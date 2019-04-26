@@ -83,6 +83,13 @@ function debounce(fn,delay){
             this.mouseUp=mouseUp;
             let self=this;
             let sendMessageT=throttle(this.sendMessage,50,this);
+            //鼠标移出 就移除mousemove事件
+            // this.context.canvas.onmouseleave=function(e){
+            //     this.context.canvas.removeEventListener("mousemove",this.startAction);
+            // }
+            // function mouseLeave(){
+            //     console.log('mouseLeave');
+            // }
              //封装鼠标按下函数
             function startAction(event) {
                 //如果没有使用橡皮擦就画线
@@ -161,6 +168,7 @@ function debounce(fn,delay){
                 let startX=self.message.x1,startY=self.message.y1;
                 // var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
                 // var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
+                
                 rectLeft = (startX - (evt.offsetX ) > 0 ? evt.offsetX : startX) + "px";
                 rectTop = (startY - (evt.offsetY )> 0 ? evt.offsetY : startY) + "px";
                 rectHeight = Math.abs(startY - (evt.offsetY)) + "px";
@@ -173,20 +181,20 @@ function debounce(fn,delay){
                 }
             }
             function mouseUp(e){
-                console.log(e)
                 if(document.querySelector('#rect')){
                     document.querySelector('#rect').remove();
                     let evt = window.event || e;
                     let x1=self.message.x1 ,y1=self.message.y1 ;
-                    self.message.x2=evt.offsetX;
-                    self.message.y2=evt.offsetY;
+                    self.message.x2=evt.pageX - _EleLeft;
+                    self.message.y2=evt.pageY - _EleTop;
                     self.message.lineWidth=self.lineWidth;
                     self.message.lineColor=self.context.strokeStyle;
                     self.message.roomID=self.roomID;
                     self.ws.send(self.message);
-                    console.log(self.message)
                     self.context.beginPath();
                     self.context.rect(x1,y1,self.message.x2-x1,self.message.y2-y1);
+                    console.log(evt)
+                    console.log(x1,y1,self.message.x2,self.message.y2)
                     self.context.stroke();
                     //恢复空对象
                     self.message={};
@@ -194,6 +202,19 @@ function debounce(fn,delay){
                 }
             }
         }
+        // fixPosition(position){
+        //     if(position.x1>position.x2){
+        //         let x=position.x1;
+        //         position.x1=position.x2;
+        //         position.x2=x;
+        //     }
+        //     if(position.y1>position.y1){
+        //         let y=position.cuttingY1;
+        //         position.y1=position.y2;
+        //         position.y2=y;
+        //     }
+        //     return position
+        // }
         initWebPainter(username,roomID){
             let self=this;
             let ws = io();
@@ -247,20 +268,20 @@ function debounce(fn,delay){
                 case 1://矩形框模式
                     this.context.canvas.removeEventListener("mousedown",this.startAction);
                     //this.context.canvas.removeEventListener("mousemove",this.moveAction);
-                    this.context.canvas.removeEventListener("mouseup",this.endAction);
+                    document.body.removeEventListener("mouseup",this.endAction);
                     this.context.canvas.addEventListener("mousedown",this.mouseStart);
                     document.body.addEventListener("mouseup",this.mouseUp);
                     break;
                 case 2://画笔模式
                     this.context.canvas.addEventListener("mousedown",this.startAction);
-                    this.context.canvas.addEventListener("mouseup",this.endAction);
+                    document.body.addEventListener("mouseup",this.endAction);
                     this.context.canvas.removeEventListener("mousedown",this.mouseStart);
                     
                     document.body.removeEventListener("mouseup",this.mouseUp);
                     break;
                 case 3://橡皮檫模式
                     this.context.canvas.addEventListener("mousedown",this.startAction);
-                    this.context.canvas.addEventListener("mouseup",this.endAction);
+                    document.body.addEventListener("mouseup",this.endAction);
                     
                     this.context.canvas.removeEventListener("mousedown",this.mouseStart);
                     // this.context.canvas.removeEventListener("mousemove",this.moveAction);
@@ -273,7 +294,7 @@ function debounce(fn,delay){
             this.isClear=false;
             //监听鼠标按下抬起
             this.context.canvas.addEventListener("mousedown",this.startAction);
-            this.context.canvas.addEventListener("mouseup",this.endAction);
+            document.body.addEventListener("mouseup",this.endAction);
         }
         
         //更新画布内容
