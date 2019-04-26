@@ -1,5 +1,4 @@
 /**
- * Created by Administrator on 2017/8/10.
  * js/painer.js
  */
 let canvasEle = document.getElementById('box');
@@ -52,7 +51,6 @@ function debounce(fn,delay){
 (function () {
     class Painter{
         constructor(id) {
-            
             this.option=1;//记录操作类型 1为画笔 0为橡皮檫
             this.context = canvasEle.getContext("2d");
             this.optionStack=[];//操作记录栈
@@ -61,7 +59,7 @@ function debounce(fn,delay){
             this.roomID;
             this.ws={};
             // this.ws=this.initWebSocket();
-            this.context.strokeStyle = '#000';  
+            this.context.strokeStyle = '#000';
             this.isBegin=-1;//起始点
             //画笔渐变色
             // let linearGradient = this.context.createLinearGradient(0,0,900,600);
@@ -72,7 +70,7 @@ function debounce(fn,delay){
             this.initEvent();
             this.drawLine();
         }
-        
+
         //事件注册中心
         initEvent(){
             this.startAction=startAction;
@@ -141,7 +139,7 @@ function debounce(fn,delay){
                 }
                 item={x:event.pageX - _EleLeft,y:event.pageY - _EleTop};
                 self.resultposition.push(item);
-                
+
                 self.context.lineTo(event.pageX - _EleLeft,event.pageY - _EleTop);
                 self.context.stroke();
                 sendMessageT();
@@ -166,8 +164,7 @@ function debounce(fn,delay){
                 let evt = window.event || e;
                 let rectLeft,rectTop,rectHeight,rectWidth;
                 let startX=self.message.x1,startY=self.message.y1;
-                // var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-                // var scrollLeft = document.body.scrollLeft || document.documentElement.scrollLeft;
+
                 
                 rectLeft = (startX - (evt.offsetX ) > 0 ? evt.offsetX : startX) + "px";
                 rectTop = (startY - (evt.offsetY )> 0 ? evt.offsetY : startY) + "px";
@@ -276,7 +273,7 @@ function debounce(fn,delay){
                     this.context.canvas.addEventListener("mousedown",this.startAction);
                     document.body.addEventListener("mouseup",this.endAction);
                     this.context.canvas.removeEventListener("mousedown",this.mouseStart);
-                    
+
                     document.body.removeEventListener("mouseup",this.mouseUp);
                     break;
                 case 3://橡皮檫模式
@@ -296,7 +293,7 @@ function debounce(fn,delay){
             this.context.canvas.addEventListener("mousedown",this.startAction);
             document.body.addEventListener("mouseup",this.endAction);
         }
-        
+
         //更新画布内容
         update(message){
             console.log(message)
@@ -324,7 +321,7 @@ function debounce(fn,delay){
                         this.context.stroke();
                     })
                     break;
-                
+
                 case 2:
                     this.context.beginPath();
                     this.context.rect(message.x1,message.y1,message.x2-message.x1,message.y2-message.y1);
@@ -393,11 +390,11 @@ function debounce(fn,delay){
         exit(){
             this.context.clearRect(0,0,900,600);
         }
-    }   
+    }
     //Painter定义到window上
     window.Painter = Painter;
 })();
 window.onresize=debounce(function(){
     _EleLeft=getElementLeft(canvasEle);
     _EleTop=getElementTop(canvasEle);
-},500)
+},500);
