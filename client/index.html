@@ -158,7 +158,8 @@
 							</form>
 						</div>
 						<div class="modal-footer">
-							<button class="btn btn-info btn-login" data-dismiss="modal">登录</button>
+							<!--<button class="userLogin" data-dismiss="model">登录</button>-->
+							<button class="btn btn-info btn-login">登录</button>
 						</div>
 					</div>
 				</div>
@@ -206,12 +207,17 @@
 				document.querySelector('.eraser').addEventListener('click', function () {
 					painter.eraser();
 				});
-				document.querySelector('.btn-login').addEventListener('click',function(){
-					let userName=document.querySelector('[name="username"]').value;
-					let roomId=document.querySelector('[name="number"]').value;
-					document.getElementById('user-name').innerHTML=userName;
-					document.getElementById('room-id').innerHTML=roomId;
-					painter.initWebPainter(userName,roomId);
+				document.querySelector('.btn-login').addEventListener('click',function(event){
+				    let userLogin = document.querySelector('.userLogin');
+				    console.log(userLogin);
+					let userName = document.querySelector('[name="username"]').value;
+					let roomId = document.querySelector('[name="number"]').value;
+					userName === '' ? alert('请输入用户名') : document.getElementById('user-name').innerHTML=userName ;
+					if(userName) roomId === '' ? alert('请输入房间号') : document.getElementById('room-id').innerHTML=roomId ;
+					if(userName && roomId) {
+                        $('#login-modal').modal('hide');
+                        painter.initWebPainter(userName,roomId);
+					}
 				})
 				//下载画布内容
 				// document.querySelector(".download").onclick = function () {

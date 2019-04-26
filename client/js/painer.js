@@ -1,5 +1,4 @@
 /**
- * Created by Administrator on 2017/8/10.
  * js/painer.js
  */
 let canvasEle = document.getElementById('box');
@@ -39,7 +38,6 @@ function throttle(fn,delay,context){
 (function () {
     class Painter{
         constructor(id) {
-            
             this.option=1;//记录操作类型 1为画笔 0为橡皮檫
             this.context = canvasEle.getContext("2d");
             this.optionStack=[];//操作记录栈
@@ -47,7 +45,7 @@ function throttle(fn,delay,context){
             this.message={};
             this.roomID;
             this.ws={};
-            // this.ws=this.initWebSocket();  
+            // this.ws=this.initWebSocket();
             this.isBegin=-1;//起始点
             //画笔渐变色
             let linearGradient = this.context.createLinearGradient(0,0,900,600);
@@ -108,7 +106,7 @@ function throttle(fn,delay,context){
             //封装鼠标移动函数
             function moveAction(event) {
                 let item;
-                
+
                 //判断是否启动橡皮擦功能
                 if(self.isClear){
                     self.context.clearRect(event.pageX-eraserWidth/2-_EleLeft,event.pageY-eraserWidth/2-_EleTop,eraserWidth,eraserWidth);
@@ -118,7 +116,7 @@ function throttle(fn,delay,context){
                 }
                 item={x:event.pageX - _EleLeft,y:event.pageY - _EleTop};
                 self.resultposition.push(item);
-                
+
                 self.context.lineTo(event.pageX - _EleLeft,event.pageY - _EleTop);
                 self.context.stroke();
                 sendMessageT();
@@ -153,8 +151,8 @@ function throttle(fn,delay,context){
                 document.querySelector('#rect').style.marginTop = rectTop;
                 document.querySelector('#rect').style.width = rectWidth;
                 document.querySelector('#rect').style.height = rectHeight;
-                
-                
+
+
             }
             function mouseUp(e){
                 console.log('mouseUp')
@@ -243,7 +241,7 @@ function throttle(fn,delay,context){
             this.context.canvas.addEventListener("mousedown",this.startAction);
             this.context.canvas.addEventListener("mouseup",this.endAction);
         }
-        
+
         //更新画布内容
         update(message){
             let op=message.option;
@@ -313,7 +311,7 @@ function throttle(fn,delay,context){
             this.context.clearRect(0,0,900,600);
             this.ws.send(message);
         }
-    }   
+    }
     //Painter定义到window上
     window.Painter = Painter;
 })();
