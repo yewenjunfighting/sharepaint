@@ -2,194 +2,199 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<title></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.8.1/css/all.min.css">
-	<link rel="stylesheet" href="./css/index.css">
-	
+    <link rel="stylesheet" href="./css/index.css">
 
 </head>
 
 <body>
-	<div class="container-fluid">
-		<div class="box row">
-            <div class="col-11 order-12">
-				<span></span>
-				<ul>
-					<li style="width:240px;margin-left: 10px">
-						<img src="./images/room_number.png">
-							<div class="div"><span style="width:80px;">房间号：<span><span id="room-id">roomnumber<span></div>
-					</li>
-					<li style="width:200px">
-						<img src="./images/room_owner.png">
-							<div class="div"><span style="width:80px;">姓名：</span><span id="user-name">roomowner</span></div>
-					</li>
-					<li style="width:240px">
-						<img src="./images/persons.png">
-							<div class="div"><span style="width:80px;">人数：</span><span id="user-count">personnumber</span></div>
-					</li>
-					<li>
-						<img src="./images/seting.png"><a>设置</a>
-					</li>
-					<li>
-						<img src="./images/model.png"><a>模板</a>
-					</li>
-					<li id="save">
-						<img src="./images/save.png"><a >保存</a>
-					</li>
-					<li id="exit">
-						<img src="./images/out.png"><a>退出</a>
-					</li>
-				</ul>
-				<div class="col containerBox">
-					<canvas id="box" width="900" height="600"></canvas>
-				</div>
-			</div>
-		<!-- <div class="toolMenu">
-			            <div class="openButton">刷</div>
-			            <ul class="tool">
-			                <li>宽度:<input class="widthInput" type="range"/></li>
-			                <li>颜色:<input type="color"/></li>
-			                <li><button>橡皮擦</button></li>
-			            </ul>
-			            <ul class="tool eraser">
-			                <li>宽度:<input class="eraserInput" type="range"/></li>
-			            </ul>
-			            <!-- <div class="openButton clearButton">清</div>
-			            <a href="" class="download"><div class="download">存</div></a>
-					</div>  -->
-			<div class="col-1">
-				<div class="card tools">
-					<div class="row no-gutters">
-						<div class="col-12">
-							<div class="tool active text-center pencil" data-name="pencil" title=""> <i
-									class="fas fa-pencil-alt"></i></div>
-						</div>
-						<div class="col-12">
-							<div class="tool text-center eraser" data-name="eraser"> <i class="fas fa-eraser"></i></div>
-						</div>
-						
-						<div class="col-12">
-							<div class="tool text-center rectangle" data-name="rect"> <i class="far fa-square"></i></div>
-							<div class="tool text-center" data-name="clear" data-toggle="modal" data-target="#makesure"> <i class="fas fa-trash-alt"></i></div>
-                            <div class="col-12">
-                                <form>
+<div class="container-fluid page">
+        <div class="card tools">
+            <div class="row no-gutters">
+                <div class="col-12">
+                    <div class="tool active text-center pencil" data-name="pencil" title=""><i
+                            class="fas fa-pencil-alt"></i></div>
+                </div>
+                <div class="col-12">
+                    <div class="tool text-center eraser" data-name="eraser"><i class="fas fa-eraser"></i></div>
+                </div>
+                <div class="col-12">
+                    <div class="tool text-center rectangle" data-name="rect"> <i class="far fa-square"></i></div>
+                    <div class="tool text-center" data-name="clear" data-toggle="modal" data-target="#makesure"> <i class="fas fa-trash-alt"></i></div>
+                </div>
+                <div class="col-12">
+
+                        <form>
+                            <div class="form-group">
+                                <label for="color"></label>
+                                <input type="color" id="color" name="color"/>
+                            </div>
+                            <button type="button" id="line_width" class="btn btn-primary dropdown-toggle"
+                                    data-toggle="dropdown" data-display="static" aria-haspopup="true"
+                                    aria-expanded="false">线宽
+                            </button>
+                            <div class="dropdown-menu">
+
+                                <form class="px-4 py-3">
                                     <div class="form-group">
-                                        <label for="color"></label>
-                                        <input type="color" id="color" name="color" />
+                                        <label for="line_width_ipt"></label>
+                                        <input type="range" id="line_width_ipt" name="line_width"/>
                                     </div>
-                                    <button type="button" id="line_width" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">线宽</button>
-                                    <div class="dropdown-menu">
-										<form class="px-4 py-3">
-											<div class="form-group">
-												<label for="line_width_ipt"></label>
-												<input type="range" id="line_width_ipt" name="line_width" />
-											</div>
-										</form>
-									</div>
                                 </form>
                             </div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!--登录模态框开始-->
-			<div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-						</div>
-						<div class="modal-body">
-							<form id="login-form" class="form-horizontal" action="#" method="post">
-								<div class="form-group">
-									<label class="col-lg-3">
-										<h5 class="text-info text-center">用户名</h5>
-									</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="username" />
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-lg-3">
-										<h5 class="text-info text-center">房间号</h5>
-									</label>
-									<div class="col-lg-9">
-										<input type="text" class="form-control" name="number" />
-									</div>
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button class="btn btn-info btn-login">登录</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 模态框 -->
-			<div class="modal fade" id="makesure">
-					<div class="modal-dialog modal-sm">
-					<div class="modal-content">
-				
-						<!-- 模态框头部 -->
-						<div class="modal-header">
-						<h4 class="modal-title">清空画布</h4>
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						</div>
-				
-						<!-- 模态框主体 -->
-						<div class="modal-body">
-						确认清空画布吗？
-						</div>
-				
-						<!-- 模态框底部 -->
-						<div class="modal-footer">
-						<button type="button" class="btn btn-danger clear" data-dismiss="modal">确认</button>
-						</div>
-				
-					</div>
-					</div>
-			</div>
-	</div>
-	<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
-	<script src="js/DPAlgorithm.js"></script>
-	<script src="js/painer.js"></script>
-	<!-- <script src="js/main.js"></script> -->
-	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-	<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
+                        </form>
+                    </div>
+                </div>
+        </div>
+    <div class="row">
+        <div class="col d-flex align-content-between flex-wrap">
+            <div class="box">
+            <ul>
+                <li style="margin-left: 10px">
+                    <img src="./images/room_number.png">
+                    <div class="div"><span style="width:80px;">房间号：</span><span id="room-id"></span>
+                    </div>
+                </li>
+                <li style="">
+                    <img src="./images/room_owner.png">
+                    <div class="div"><span style="width:80px;">姓名：</span><span id="user-name"></span>
+                    </div>
+                </li>
+                <li>
+                    <img src="./images/persons.png">
+                    <div class="div"><span style="width:80px;">人数：</span><span
+                            id="user-count"></span></div>
+                </li>
+                <li>
+                    <img src="./images/seting.png"><a>设置</a>
+                </li>
+                <li>
+                    <img src="./images/model.png"><a>模板</a>
+                </li>
+                <li id="save">
+                    <img src="./images/save.png"><a>保存</a>
+                </li>
+                <li id="exit">
+                    <img src="./images/out.png"><a>退出</a>
+                </li>
+            </ul>
+            </div>
+                <canvas id="box" width="1100" height="650"></canvas>
+        </div>
+    </div>
+</div>
 
-	<!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.15.0/dist/umd/popper.min.js"></script>
+<!-- <div class="toolMenu">
+                <div class="openButton">刷</div>
+                <ul class="tool">
+                    <li>宽度:<input class="widthInput" type="range"/></li>
+                    <li>颜色:<input type="color"/></li>
+                    <li><button>橡皮擦</button></li>
+                </ul>
+                <ul class="tool eraser">
+                    <li>宽度:<input class="eraserInput" type="range"/></li>
+                </ul>
+                 <div class="openButton clearButton">清</div>
+                <a href="" class="download"><div class="download">存</div></a>
+            </div>  -->
+<!--登录模态框开始-->
+<div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <form id="login-form" class="form-horizontal" action="#" method="post">
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            <h5 class="text-info text-center">用户名</h5>
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="username"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3">
+                            <h5 class="text-info text-center">房间号</h5>
+                        </label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control" name="number"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info btn-login" data-dismiss="modal">登录</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框 -->
+<div class="modal fade" id="makesure">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
 
-	<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-	<script>
-		(function () {
-			function init() {
-				var painter = new Painter("box");
-				painter.setLineWidth(5);
-				painter.isRoundLineCap(true);
-				//painter.setLineColor("#242424");
-				//	var toolView = document.querySelector(".tool");
-				document.querySelector(".pencil").onclick = function () {
-					//toolView.style.display = toolView.style.display === "block" ? "none" : "block";
-					painter.drawLine();
-				};
-				document.getElementById('line_width_ipt').value = painter.context.lineWidth * 2;
-				//input的range绑定到画笔宽度
-				document.getElementById('line_width_ipt').onchange = function () {
-					painter.setLineWidth(this.value / 2);
-				};
-				//获取color颜色绑定到画笔
-				document.querySelector("input[type=color]").onchange = function () {
-					painter.setLineColor(this.value);
-				};
-				document.querySelector('.rectangle').onclick=function(){
-					painter.drawRect();
-				}
-				// //清屏
-				document.querySelector('.clear').onclick = function () {
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">清空画布</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                确认清空画布吗？
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger clear" data-dismiss="modal">确认</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/socket.io/1.7.3/socket.io.min.js"></script>
+<script src="js/DPAlgorithm.js"></script>
+<script src="js/painer.js"></script>
+<!-- <script src="js/main.js"></script> -->
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js"></script>
+
+<!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.15.0/dist/umd/popper.min.js"></script>
+
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+<script>
+    (function () {
+        function init() {
+            var painter = new Painter("box");
+            painter.setLineWidth(5);
+            painter.isRoundLineCap(true);
+            //painter.setLineColor("#242424");
+            //	var toolView = document.querySelector(".tool");
+            document.querySelector(".pencil").onclick = function () {
+                //toolView.style.display = toolView.style.display === "block" ? "none" : "block";
+                painter.drawLine();
+            };
+            document.getElementById('line_width_ipt').value = painter.context.lineWidth * 2;
+            //input的range绑定到画笔宽度
+            document.getElementById('line_width_ipt').onchange = function () {
+                painter.setLineWidth(this.value / 2);
+            };
+            //获取color颜色绑定到画笔
+            document.querySelector("input[type=color]").onchange = function () {
+                painter.setLineColor(this.value);
+            };
+            document.querySelector('.rectangle').onclick = function () {
+                painter.drawRect();
+            }
+            // //清屏
+            document.querySelector('.clear').onclick = function () {
 
 					painter.clearCls();
 				}
@@ -200,8 +205,8 @@
 				document.querySelector('.btn-login').addEventListener('click',function(){
 					let userName=document.querySelector('[name="username"]').value;
 					let roomId=document.querySelector('[name="number"]').value;
-					userName === '' ? alert('请输入用户名') : document.getElementById('user-name').innerHTML=userName ;
-					if(userName) roomId === '' ? alert('请输入房间号') : document.getElementById('room-id').innerHTML=roomId ;
+					userName === '' ? alert('请输入用户名') : document.getElementById('user-name').innerText=userName ;
+					if(userName) roomId === '' ? alert('请输入房间号') : document.getElementById('room-id').innerText=roomId ;
 					if(userName && roomId) {
                         $('#login-modal').modal('hide');
                         painter.initWebPainter(userName,roomId);
@@ -262,5 +267,5 @@
             // }
         }
 	</script>
-
+</body>
 </html>

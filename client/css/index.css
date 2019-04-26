@@ -1,11 +1,10 @@
 *{padding: 0;margin: 0;}
-html,body{
-	height:100%;
+
+.page {
+    display: flex;
 }
-.containerBox{
-    padding: 0;
-    margin: 0;
-}
+
+
 .rect{position:absolute; border:1px dashed #78a6d4; width:0px; height:0px;left:0px; top:0px; overflow:hidden;}
 /* .retc{position:absolute; border:1px solid #CCCCCC; overflow:hidden; background:#EFEFEF} */
 .tools {
@@ -27,13 +26,14 @@ html,body{
 }
 #box {
     cursor: crosshair;
-    border: 1px solid rgba(0,0,0,.125);
+    border: 2px solid rgba(0,0,0,.250);
+    flex-shrink: 0;
 }
 .box li {
     list-style: none;
-    float: left;
-    width: 89px;
+    width: 9rem;
     height: 42px;
+    display: inline-block;
     /* text-align: center; */
     cursor: pointer;
     font: 400 16px/42px microsoft yahei;
@@ -47,6 +47,7 @@ html,body{
 
 .box {
     height: 42px;
+    width: 1100px;
     /* margin: 200px auto; */
     background: #fff;
     position: relative;
@@ -76,7 +77,4 @@ html,body{
 
 .div {
     display: inline-block;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%)
 }

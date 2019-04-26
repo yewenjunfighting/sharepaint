@@ -3,8 +3,8 @@
  * js/painer.js
  */
 let canvasEle = document.getElementById('box');
-            canvasEle.width = 900;
-            canvasEle.height = 600;
+            canvasEle.width = 1100;
+            canvasEle.height = 650;
 const eraserWidth=16;
 let _EleLeft=getElementLeft(canvasEle),_EleTop=getElementTop(canvasEle);
 console.log(_EleLeft,_EleTop)
