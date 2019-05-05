@@ -26,14 +26,14 @@
             panter.clearCls();
         }
         //橡皮擦
-        document.querySelector('.tool button').onclick=function(){
+        document.querySelector('.tool button').onclick = function(){
             panter.eraser();
         }
         //下载画布内容
-        document.querySelector(".download").onclick=function(){   
-            var a=panter.save();
+        document.querySelector(".download").onclick = function(){
+            let a = panter.save();
             console.log(1);
-            this.href=a;
+            this.href = a;
         }
     }
     init();
