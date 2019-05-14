@@ -3,12 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>画盘</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.8.1/css/all.min.css">
     <link rel="stylesheet" href="./css/index.css">
-
 </head>
 
 <body>
@@ -88,19 +87,6 @@
     </div>
 </div>
 
-<!-- <div class="toolMenu">
-                <div class="openButton">刷</div>
-                <ul class="tool">
-                    <li>宽度:<input class="widthInput" type="range"/></li>
-                    <li>颜色:<input type="color"/></li>
-                    <li><button>橡皮擦</button></li>
-                </ul>
-                <ul class="tool eraser">
-                    <li>宽度:<input class="eraserInput" type="range"/></li>
-                </ul>
-                 <div class="openButton clearButton">清</div>
-                <a href="" class="download"><div class="download">存</div></a>
-            </div>  -->
 <!--登录模态框开始-->
 <div class="modal fade" id="login-modal" tabindex="-1" data-backdrop="static">
     <div class="modal-dialog">
@@ -172,7 +158,7 @@
 <script>
     (function () {
         function init() {
-            var painter = new Painter("box");
+            let painter = new Painter("box");
             painter.setLineWidth(5);
             painter.isRoundLineCap(true);
             //painter.setLineColor("#242424");
@@ -244,28 +230,6 @@
 				activeTool = element;
 			});
 		});
-        window.onload = function () {
-            // // 获取相关元素
-            // var btn = document.querySelectorAll(".box span")[0];
-            // var ul = document.querySelectorAll(".box ul")[0];
-            // var liarr = ul.children;
-            // var liwidth = liarr[0].offsetWidth;
-            // //获取相关元素，绑定事件，书写事件驱动程序
-            // var raw = 0;
-            // for (var i = 0; i < liarr.length; i++) {
-            //     // 给元素绑定index属性；
-            //     liarr[i].index = i;
-            //     liarr[i].onmouseover = function () {
-            //         animate(btn, this.index * liwidth);
-            //     }
-            //     liarr[i].onmouseout = function () {
-            //         animate(btn, raw * liwidth);
-            //     }
-            //     liarr[i].onclick = function () {
-            //         raw = this.index;
-            //     }
-            // }
-        }
 	</script>
 </body>
 </html>

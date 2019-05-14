@@ -4,11 +4,11 @@ let router = express.Router();
 let IO = require('socket.io');
 let app = express();
 let server = require('http').Server(app);
+const fs = require('fs')
 
 app.use(express.static(path.join(__dirname, 'client')));
 app.set('views', path.join(__dirname, 'client'));
 app.set('view engine', 'ejs');
-
 // 创建socket服务
 let socketIO = IO(server);
 // 所有房间绘制信息
