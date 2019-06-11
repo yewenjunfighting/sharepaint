@@ -1,40 +1,37 @@
 /**
- * Created by Administrator on 2017/8/10.
- * js/main.js
- */
+ * Painter是个类, 被附加到window上面
+ * */
 (function () {
     function init() {
-        var panter = new Painter("box");
-        panter.setLineWidth(5);
-        panter.isRoundLineCap(true);
-        //panter.setLineColor("#242424");
-        var toolView = document.querySelector(".tool");
+        let painter = new Painter("box");
+        let range = document.querySelector('input[type=range]');
+        painter.setLineWidth(5);
+        painter.isRoundLineCap(true);
+        let toolView = document.querySelector(".tool");
         document.querySelector(".openButton").onclick = function () {
-            toolView.style.display = toolView.style.display === "block"?"none":"block";
+            toolView.style.display = toolView.style.display === "block" ? "none" : "block";
         };
-        document.querySelector("input[type=range]").value = panter.context.lineWidth*2;
+        range.value = painter.context.lineWidth * 2;
         //input的range绑定到画笔宽度
-        document.querySelector("input[type=range]").onchange = function () {
-            panter.setLineWidth(this.value/2);
+        range.onchange = function () {
+            painter.setLineWidth(this.value / 2);
         };
         //获取color颜色绑定到画笔
         document.querySelector("input[type=color]").onchange = function () {
-            panter.setLineColor(this.value);
+            painter.setLineColor(this.value);
         };
         //清屏
         document.querySelector('.clearButton').onclick = function() {
-            panter.clearCls();
-        }
+            painter.clearCls();
+        };
         //橡皮擦
         document.querySelector('.tool button').onclick = function(){
-            panter.eraser();
-        }
+            painter.eraser();
+        };
         //下载画布内容
         document.querySelector(".download").onclick = function(){
-            let a = panter.save();
-            console.log(1);
-            this.href = a;
-        }
+            this.href =painter.save();
+        };
     }
     init();
 })();

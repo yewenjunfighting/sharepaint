@@ -34,10 +34,9 @@
     width: 9rem;
     height: 42px;
     display: inline-block;
-    /* text-align: center; */
     cursor: pointer;
     font: 400 16px/42px microsoft yahei;
-    line-height: 42px;
+    text-align: center;
     vertical-align: middle;
     position: relative;
 }
@@ -52,7 +51,7 @@
     background: #fff;
     position: relative;
     border-radius: 7px;
-    
+
 }
 
 .box img {

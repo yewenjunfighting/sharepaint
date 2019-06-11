@@ -1,4 +1,11 @@
+/**
+ * 原理: 道格拉斯抽稀算法, 用折线来近似曲线
+ * */
 let DouglasPeucker = {
+    /**
+     * points 里存储了所有的点
+     * tolerance 是一个阈值
+     * */
   getProcessPoints: function(points, tolerance) {
       if (!Array.isArray(points) || !points.length) { //当points不是数组或没有值时，直接返回一个空数组
           return [];
@@ -34,19 +41,26 @@ let DouglasPeucker = {
       let maxDis = 0,
           idxFarthest = 0; //定义最大长度及最远点的下标
       for (let i = firstPoint, dis; i < lastPoint; i++) {
+          // 求出曲线上的点到曲线的弦上的最大距离
           dis = this.perpendicularDistance(points[firstPoint], points[lastPoint], points[i]); //获取当前点到起点与
           if (dis > maxDis) { //保存最远距离
               maxDis = dis;
               idxFarthest = i;
           }
       }
+
       if (maxDis > tolerance && idxFarthest !== 0) { //如果最远距离大于临界值
+          //
           pointIndexToKeep.push(idxFarthest);
           this.reduce(points, firstPoint, idxFarthest, tolerance, pointIndexToKeep);
           this.reduce(points, idxFarthest, lastPoint, tolerance, pointIndexToKeep);
       }
   },
+
   perpendicularDistance: function(beginPoint, endPoint, comparePoint) {
+      // 求三角形的面积 用叉积求解
+      // a x b = |a| * |b| * sin<a, b>
+      // (x1, y1) x (x2, y2) = x1y2 - y1x2
       let area = Math.abs(0.5 * (beginPoint.x * endPoint.y + endPoint.x * comparePoint.y + comparePoint.x * beginPoint.y -
           endPoint.x * beginPoint.y - comparePoint.x * endPoint.y - beginPoint.x * comparePoint.y));
       let bottom = Math.sqrt(Math.pow(beginPoint.x - endPoint.x, 2) + Math.pow(beginPoint.y - endPoint.y, 2));
